@@ -62,7 +62,7 @@
     }
     #result{
         float: left;
-        width: 100%;
+        width: 950px;
         height: 10%;
         background-color: coral;
         text-align: center;
@@ -103,8 +103,8 @@
     <div id="calculation"></div>
     <div id="result"></div>
     <div id="clickspace">
-        <button id="true">True</button>
-        <button id="false">False</button>
+        <button onclick="check(btn)" id="true">True</button>
+        <button onclick="check(btn)" id="false">False</button>
     </div>
 </div>
 </body>
@@ -115,14 +115,6 @@ let time = 5;
 let fullTime = 5;
 let widthTime = 0;
 
-function startGame(){
-    time = fullTime;
-    widthTime = document.getElementById('time').offsetWidth;
-    document.getElementById('point').innerHTML = 'point: ' + point;
-    document.getElementById('stage').innerHTML = 'stage: ' + stage;
-    generateCalculation();
-    countDown()
-}
 
 class number{
     constructor(x) {
@@ -199,8 +191,7 @@ function getResult(){
 
 function getFakeResult(){
     let fakeresult = new clresult();
-    let fakevalue = getResult() + Math.floor(Math.random()*10) - Math.floor(Math.random()*10);
-    fakeresult.REST = fakevalue;
+    fakeresult.REST = getResult() + (Math.floor(Math.random()*10)) - (Math.floor(Math.random()*10));
     return fakeresult.REST;
 }
 
@@ -229,7 +220,7 @@ function check(btn){
     let check = false;
     switch (btn) {
         case 'true':
-            if (result == getResult()) check = true;
+            if (result === getResult()) check = true;
             break;
         case 'false':
             if (result !== getResult()) check = true;
@@ -238,23 +229,31 @@ function check(btn){
     check?nextLevel():gameOver();
 }
 
+
 function nextLevel() {
-    point += stage;
+    point++;
     stage++;
     time = fullTime;
     document.getElementById("point").innerHTML = "Point: "+ point;
     document.getElementById("stage").innerHTML = "Stage: "+ stage;
     document.getElementById("correct").currentTime = 0;
-    document.getElementById("correct").play();
     generateCalculation();
 }
 
 function gameOver(){
     document.getElementById('true').style.display = 'none';
     document.getElementById('false').style.display = 'none';
-    document.getElementById("wrong").play();
     alert('Game Over');
     location.reload();
+}
+
+function startGame(){
+    time = fullTime;
+    widthTime = document.getElementById('time').offsetWidth;
+    document.getElementById('point').innerHTML = 'point: ' + point;
+    document.getElementById('stage').innerHTML = 'stage: ' + stage;
+    generateCalculation();
+    countDown()
 }
 
 startGame();
