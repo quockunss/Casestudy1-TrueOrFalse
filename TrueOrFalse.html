@@ -151,7 +151,8 @@ function getRandomNumber2(){
 class operator{
     constructor(ope) {
         this.ope = ope;
-    }get OPE(){
+    }
+    get OPE(){
         return this.ope;
     }
     set OPE(ope){
@@ -176,20 +177,40 @@ function generateCalculation(){
     document.getElementById('result').innerHTML = getRandomResult(cal);
 }
 
-function getResult(){
-    let cal = document.getElementById('calculation').innerHTML;
-    return eval(cal);
+class clresult{
+    constructor(rest) {
+        this.rest = rest;
+    }
+    get REST(){
+        return this.rest;
+    }
+    set REST(rest){
+        return this.rest = rest;
+    }
 }
 
-function getRandomResult(){
-    let randomResult = Math.random() >= 5;
-    return randomResult ? getResult() : getFakeResult();
+
+function getResult(){
+    let realresult = new clresult();
+    let cal = document.getElementById('calculation').innerHTML;
+    realresult.REST = eval(cal);
+    return realresult.REST;
 }
 
 function getFakeResult(){
-    let fakeResult = getRandomNumber(getResult() - getRandomNumber(5,25), getResult() + getRandomNumber(5,25));
-    return (fakeResult === getResult()) ? getFakeResult() : fakeResult;
+    let fakeresult = new clresult();
+    let fakevalue = getResult() + Math.floor(Math.random()*10) - Math.floor(Math.random()*10);
+    fakeresult.REST = fakevalue;
+    return fakeresult.REST;
 }
+
+function getRandomResult(){
+    let results = [realresult.REST,fakeresult.REST];
+    let ren = Math.floor(Math.random() * results.length);
+
+}
+
+
 
 function countDown(){
     let timeDiv = document.getElementById('time');
