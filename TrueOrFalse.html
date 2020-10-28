@@ -111,8 +111,8 @@
 <script>
 let point = 0;
 let stage = 1;
-let time = 60;
-let fullTime = 60;
+let time = 5;
+let fullTime = 5;
 let widthTime = 0;
 
 function startGame(){
@@ -205,9 +205,9 @@ function getFakeResult(){
 }
 
 function getRandomResult(){
-    let results = [realresult.REST,fakeresult.REST];
+    let results = [getFakeResult(),getResult()];
     let ren = Math.floor(Math.random() * results.length);
-
+    return results[ren];
 }
 
 
@@ -219,7 +219,7 @@ function countDown(){
         timeDiv.style.width = widthTime * time/fullTime + 'px';
         if(time <=0){
             clearInterval(run);
-            gameover();
+            gameOver();
         }
     },100);
 }
@@ -252,7 +252,7 @@ function nextLevel() {
 function gameOver(){
     document.getElementById('true').style.display = 'none';
     document.getElementById('false').style.display = 'none';
-    document.getElementById('wrong').play();
+    document.getElementById("wrong").play();
     alert('Game Over');
     location.reload();
 }
