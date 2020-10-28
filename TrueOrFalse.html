@@ -8,45 +8,57 @@
     main{
         width: 500px;
         height: 800px;
+        background-color: white;
     }
     body{
-        font-size: 35px;
+        font-size: 40px;
         height: 100%;
     }
     h1{
         text-align: center;
         background-color: lightblue;
+        margin-bottom: 0;
+        margin-left: 200px;
+        margin-right: 200px;
+        padding: 20px;
     }
     p{
-        width: 50%;
         box-sizing: border-box;
         height: 10%;
         float: left;
+        margin: 0 0;
     }
     #point{
+        width: 475px;
         text-align: left;
         background-color: crimson;
-        padding-left: 10px;
+        margin-left: 200px;
     }
     #stage{
+        width: 475px;
         text-align: right;
         background-color: crimson;
-        padding-right: 10px;
+        margin-right: 200px;
+        float: right;
     }
     #time{
-        width: 100%;
+        display: block;
+        width: 950px;
         height: 10%;
         background-color: #0087d2;
         float: left;
+        margin-right: 200px;
+        margin-left: 200px;
     }
     #calculation{
         float: left;
-        width: 100%;
+        width: 950px;
         height: 25%;
         background-color: darkorchid;
         text-align: center;
         box-sizing: border-box;
         padding: 70px 0;
+        margin-left: 200px;
     }
     #result{
         float: left;
@@ -54,19 +66,24 @@
         height: 10%;
         background-color: coral;
         text-align: center;
+        margin-left: 200px;
+        box-sizing: border-box;
     }
     #clickspace{
         float: left;
-        width: 100%;
+        width: 950px;
         height: 30%;
         background-color: bisque;
         text-align: center;
+        margin-left: 200px;
+        box-sizing: border-box;
     }
     button{
-        width: 150px;
-        height: 150px;
+
+        width: 100px;
+        height: 100px;
         margin: 10px;
-        font-size: 45px;
+        font-size: 25px;
         font-weight: bold;
     }
     #true{
@@ -86,9 +103,141 @@
     <div id="calculation"></div>
     <div id="result"></div>
     <div id="clickspace">
-        <button id="true" >True</button>
+        <button id="true">True</button>
         <button id="false">False</button>
     </div>
 </div>
 </body>
+<script>
+let point = 0;
+let stage = 1;
+let time = 60;
+let fullTime = 60;
+let widthTime = 0;
+
+function startGame(){
+    time = fullTime;
+    widthTime = document.getElementById('time').offsetWidth;
+    document.getElementById('point').innerHTML = 'point: ' + point;
+    document.getElementById('stage').innerHTML = 'stage: ' + stage;
+    generateCalculation();
+    countDown()
+}
+
+class number{
+    constructor(x) {
+        this.x = x;
+    }
+    get X(){
+        return this.x;
+    }
+    set X(x){
+        return this.x = x;
+    }
+}
+
+function getRandomNumber1(){
+    let number1 = new number();
+    number1.X = Math.floor(Math.random()*10);
+    return number1.X;
+}
+function getRandomNumber2(){
+    let number2 = new number();
+    number2.X = Math.floor(Math.random()*10);
+    return number2.X;
+}
+
+
+class operator{
+    constructor(ope) {
+        this.ope = ope;
+    }get OPE(){
+        return this.ope;
+    }
+    set OPE(ope){
+        return this.ope = ope;
+    }
+}
+
+function getRandomOperator(){
+    let operatorx = new operator();
+    let operators = ['+', '-', '*'];
+    let ran = Math.floor(Math.random() * operators.length);
+    operatorx.OPE = operators[ran];
+    return operatorx.OPE;
+}
+
+function generateCalculation(){
+    let num1 = getRandomNumber1();
+    let num2 = getRandomNumber2();
+    let oper = getRandomOperator();
+    let cal = num1 + ' ' + oper + ' ' + num2;
+    document.getElementById('calculation').innerHTML = cal;
+    document.getElementById('result').innerHTML = getRandomResult(cal);
+}
+
+function getResult(){
+    let cal = document.getElementById('calculation').innerHTML;
+    return eval(cal);
+}
+
+function getRandomResult(){
+    let randomResult = Math.random() >= 5;
+    return randomResult ? getResult() : getFakeResult();
+}
+
+function getFakeResult(){
+    let fakeResult = getRandomNumber(getResult() - getRandomNumber(5,25), getResult() + getRandomNumber(5,25));
+    return (fakeResult === getResult()) ? getFakeResult() : fakeResult;
+}
+
+function countDown(){
+    let timeDiv = document.getElementById('time');
+    let run = setInterval(function (){
+        time -= 0.1;
+        timeDiv.style.width = widthTime * time/fullTime + 'px';
+        if(time <=0){
+            clearInterval(run);
+            gameover();
+        }
+    },100);
+}
+
+function check(btn){
+    let result = +document.getElementById('result').innerHTML;
+    let check = false;
+    switch (btn) {
+        case 'true':
+            if (result == getResult()) check = true;
+            break;
+        case 'false':
+            if (result !== getResult()) check = true;
+            break;
+    }
+    check?nextLevel():gameOver();
+}
+
+function nextLevel() {
+    point += stage;
+    stage++;
+    time = fullTime;
+    document.getElementById("point").innerHTML = "Point: "+ point;
+    document.getElementById("stage").innerHTML = "Stage: "+ stage;
+    document.getElementById("correct").currentTime = 0;
+    document.getElementById("correct").play();
+    generateCalculation();
+}
+
+function gameOver(){
+    document.getElementById('true').style.display = 'none';
+    document.getElementById('false').style.display = 'none';
+    document.getElementById('wrong').play();
+    alert('Game Over');
+    location.reload();
+}
+
+startGame();
+
+
+</script>
 </html>
