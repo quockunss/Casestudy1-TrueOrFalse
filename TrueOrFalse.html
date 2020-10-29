@@ -69,7 +69,7 @@
         margin-left: 200px;
         box-sizing: border-box;
     }
-    #clickspace{
+    .clickspace{
         float: left;
         width: 950px;
         height: 30%;
@@ -102,17 +102,17 @@
     <div id="time">time</div>
     <div id="calculation"></div>
     <div id="result"></div>
-    <div id="clickspace">
-        <button onclick="check(btn)" id="true">True</button>
-        <button onclick="check(btn)" id="false">False</button>
+    <div class="clickspace" id="clickspace">
+        <button onclick="check(this.id)" id="true">True</button>
+        <button onclick="check(this.id)" id="false">False</button>
     </div>
 </div>
 </body>
 <script>
 let point = 0;
 let stage = 1;
-let time = 5;
-let fullTime = 5;
+let time = 10;
+let fullTime = 10;
 let widthTime = 0;
 
 
@@ -236,7 +236,6 @@ function nextLevel() {
     time = fullTime;
     document.getElementById("point").innerHTML = "Point: "+ point;
     document.getElementById("stage").innerHTML = "Stage: "+ stage;
-    document.getElementById("correct").currentTime = 0;
     generateCalculation();
 }
 
